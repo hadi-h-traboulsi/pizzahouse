@@ -1,5 +1,5 @@
 <?php include('partials/menu.php'); ?>
-<?php include('../config/constants.php'); ?>
+
 
 <div class="main-content">
     <div class="wrapper">
@@ -88,7 +88,7 @@
                {
                    $_SESSION['update']="<div class='success'>Admin Updated successfully.</div>";
                    // redirect to manage-admin page
-                   header('location:'.SITEURL.'admin/manage-admin.php');
+                header('location:'.SITEURL.'admin/manage-admin.php');
                }
                else
                {

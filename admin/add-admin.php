@@ -1,5 +1,5 @@
 <?php include('partials/menu.php'); ?>
-<?php include('../config/constants.php'); ?>
+
 
 <div class = "main-content">
 <div class ="wrapper">
@@ -56,7 +56,7 @@ if(isset($_POST['submit'])){
     // 1.Get the data from form
       $full_name = $_POST['full_name'];
       $username = $_POST['username'];
-      $password = $_POST['password']; //password encryption with md5 method
+      $password = md5($_POST['password']); //password encryption with md5 method
 
     // 2.SQL query to save the data in the databse
     $sql = "INSERT INTO tbl_admin SET
