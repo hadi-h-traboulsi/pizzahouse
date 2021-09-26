@@ -1,57 +1,12 @@
 <?php include('partials-front/menu.php'); ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-   
 
-
-<meta charset="UTF-8">
-    <!-- Important to make website responsive -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurant Website</title>
-
-    <!-- Link our CSS file -->
-    <link rel="stylesheet" href="css/style.css">
-</head>
-
-<body>
-    <!-- Navbar Section Starts Here -->
-    <section class="navbar">
-        <div class="container">
-            <div class="logo">
-                <a href="#" title="Logo">
-                    <img src="images/logo.png" alt="Restaurant Logo" class="img-responsive">
-                </a>
-            </div>
-
-            <div class="menu text-right">
-                <ul>
-                    <li>
-                        <a href="index.html">Home</a>
-                    </li>
-                    <li>
-                        <a href="categories.html">Categories</a>
-                    </li>
-                    <li>
-                        <a href="foods.html">Foods</a>
-                    </li>
-                    <li>
-                        <a href="#">Contact</a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="clearfix"></div>
-        </div>
-    </section>
-    <!-- Navbar Section Ends Here -->
 
     <!-- fOOD sEARCH Section Starts Here -->
     <section class="food-search text-center">
         <div class="container">
             
-            <form action="food-search.html" method="POST">
+            <form action="<?php echo SITEURL; ?>food-search.php" method="POST">
                 <input type="search" name="search" placeholder="Search for Food.." required>
                 <input type="submit" name="submit" value="Search" class="btn btn-primary">
             </form>
@@ -64,30 +19,69 @@
     <section class="categories">
         <div class="container">
             <h2 class="text-center">Explore Foods</h2>
+            <?php
+                // create sql query to display categories drom database
+                $sql ="SELECT * FROM tbl_category WHERE active='Yes' and featured='Yes' LIMIT 3";//ya3ne ka had aksa byekhod 3 category
+                // Execute the query 
+                $res = mysqli_query($conn,$sql);
+                // count rows to check whether the category is available
+                $count=mysqli_num_rows($res);
+                
+                if($count>0)
+                {
+                    // categories available
+                    while($row = mysqli_fetch_assoc($res))
+                    {
+                        // get the values like title,image_name and id
+                        // hasab el image el mbayne mbayen fiha title,imag w id
+                        $id=$row['id'];
+                        $title=$row['title'];
+                        $image_name=$row['image_name'];
+                        ?>
+                        <a href="<?php echo SITEURL; ?>category-foods.php?category_id=<?php echo $id; ?>">
+                            <div class="box-3 float-container">
+                                <?php
+                                    // check whether image is available or not
+                                    if($image_name=="")
+                                    {
+                                        // Display message
+                                        echo"<div class='error'>/Image not Available.</div>";
+                                    }
+                                    else
+                                    {
 
-            <a href="category-foods.html">
-            <div class="box-3 float-container">
-                <img src="images/pizza.jpg" alt="Pizza" class="img-responsive img-curve">
+                                        //image available
+                                        ?>
+                                         <img src="<?php echo SITEURL; ?>images/category/<?php echo $image_name; ?>" alt="Pizza" class="img-responsive img-curve">
+                                         <?php
 
-                <h3 class="float-text text-white">Pizza</h3>
-            </div>
-            </a>
+                                    }
+                                ?>
+                               
+                                <h3 class="float-text text-white"><?php echo $title; ?></h3>
+                            </div>
+                        </a>
 
-            <a href="#">
-            <div class="box-3 float-container">
-                <img src="images/burger.jpg" alt="Burger" class="img-responsive img-curve">
 
-                <h3 class="float-text text-white">Burger</h3>
-            </div>
-            </a>
 
-            <a href="#">
-            <div class="box-3 float-container">
-                <img src="images/momo.jpg" alt="Momo" class="img-responsive img-curve">
 
-                <h3 class="float-text text-white">Momo</h3>
-            </div>
-            </a>
+                        <?php
+                    }
+
+                }
+                else
+                {
+                    // categories not available
+                    echo "<div class='error'>Category not added.</div>";
+                }
+                
+
+            ?>
+
+            
+            
+
+          
 
             <div class="clearfix"></div>
         </div>
@@ -99,107 +93,81 @@
         <div class="container">
             <h2 class="text-center">Food Menu</h2>
 
-            <div class="food-menu-box">
-                <div class="food-menu-img">
-                    <img src="images/menu-pizza.jpg" alt="Chicke Hawain Pizza" class="img-responsive img-curve">
-                </div>
+            <?php
+            // getting foods from database that are active and featured
+            // sql query
+            $sql2 ="SELECT * FROM tbl_food WHERE featured='Yes' AND active='Yes' LIMIT 6";
+            // Execute the query
+            $res2=mysqli_query($conn,$sql2);
+            // count rows
+            $count=mysqli_num_rows($res2);
+            // check whether food available or not
+            if($count>0)
+            {
+                // food available
+                while($row=mysqli_fetch_assoc($res2))
+                {
+                    $id=$row['id'];
+                    $title=$row['title'];
+                    $price=$row['price'];
+                    $description=$row['description'];
+                    $image_name=$row['image_name'];
+                    ?>
+                    <div class="food-menu-box">
+                        <div class="food-menu-img">
+                        <?php
+                            // check whether image is available or not
+                            if($image_name=="")
+                            {
+                                // image not available
+                                echo "<div class='error'>Image not available.</div>";
+                            }
+                            else
+                            {
+                                // image available
+                                ?>
+                                <img src="<?php echo SITEURL ?>images/food/<?php echo $image_name; ?>" alt="Chicke Hawain Pizza" class="img-responsive img-curve">
 
-                <div class="food-menu-desc">
-                    <h4>Food Title</h4>
-                    <p class="food-price">$2.3</p>
-                    <p class="food-detail">
-                        Made with Italian Sauce, Chicken, and organice vegetables.
-                    </p>
-                    <br>
 
-                    <a href="order.html" class="btn btn-primary">Order Now</a>
-                </div>
-            </div>
+                                <?php
+                            
 
-            <div class="food-menu-box">
-                <div class="food-menu-img">
-                    <img src="images/menu-burger.jpg" alt="Chicke Hawain Pizza" class="img-responsive img-curve">
-                </div>
+                            } 
 
-                <div class="food-menu-desc">
-                    <h4>Smoky Burger</h4>
-                    <p class="food-price">$2.3</p>
-                    <p class="food-detail">
-                        Made with Italian Sauce, Chicken, and organice vegetables.
-                    </p>
-                    <br>
+                        ?>
+                        </div>
 
-                    <a href="#" class="btn btn-primary">Order Now</a>
-                </div>
-            </div>
+                        <div class="food-menu-desc">
+                            <h4><?php echo $title; ?></h4>
+                            <p class="food-price">$<?php echo $price; ?></p>
+                            <p class="food-detail">
+                               <?php echo $description; ?>
+                            </p>
+                            <br>
 
-            <div class="food-menu-box">
-                <div class="food-menu-img">
-                    <img src="images/menu-burger.jpg" alt="Chicke Hawain Burger" class="img-responsive img-curve">
-                </div>
+                            <a href="<?php echo SITEURL; ?>order.php?food_id=<?php echo $id; ?>" class="btn btn-primary">Order Now</a>
+                        </div>
+                    </div>
 
-                <div class="food-menu-desc">
-                    <h4>Nice Burger</h4>
-                    <p class="food-price">$2.3</p>
-                    <p class="food-detail">
-                        Made with Italian Sauce, Chicken, and organice vegetables.
-                    </p>
-                    <br>
 
-                    <a href="#" class="btn btn-primary">Order Now</a>
-                </div>
-            </div>
+                <?php
+                }
+            }
+            else
+            {
+                // food not available
+                echo "<div class='error'>Food not found.</div>";
+            }
 
-            <div class="food-menu-box">
-                <div class="food-menu-img">
-                    <img src="images/menu-pizza.jpg" alt="Chicke Hawain Pizza" class="img-responsive img-curve">
-                </div>
 
-                <div class="food-menu-desc">
-                    <h4>Food Title</h4>
-                    <p class="food-price">$2.3</p>
-                    <p class="food-detail">
-                        Made with Italian Sauce, Chicken, and organice vegetables.
-                    </p>
-                    <br>
 
-                    <a href="#" class="btn btn-primary">Order Now</a>
-                </div>
-            </div>
+            ?>
 
-            <div class="food-menu-box">
-                <div class="food-menu-img">
-                    <img src="images/menu-pizza.jpg" alt="Chicke Hawain Pizza" class="img-responsive img-curve">
-                </div>
+           
 
-                <div class="food-menu-desc">
-                    <h4>Food Title</h4>
-                    <p class="food-price">$2.3</p>
-                    <p class="food-detail">
-                        Made with Italian Sauce, Chicken, and organice vegetables.
-                    </p>
-                    <br>
+           
 
-                    <a href="#" class="btn btn-primary">Order Now</a>
-                </div>
-            </div>
-
-            <div class="food-menu-box">
-                <div class="food-menu-img">
-                    <img src="images/menu-momo.jpg" alt="Chicke Hawain Momo" class="img-responsive img-curve">
-                </div>
-
-                <div class="food-menu-desc">
-                    <h4>Chicken Steam Momo</h4>
-                    <p class="food-price">$2.3</p>
-                    <p class="food-detail">
-                        Made with Italian Sauce, Chicken, and organice vegetables.
-                    </p>
-                    <br>
-
-                    <a href="#" class="btn btn-primary">Order Now</a>
-                </div>
-            </div>
+            
 
 
             <div class="clearfix"></div>

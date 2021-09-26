@@ -87,18 +87,20 @@
                                     <td>
                                         <?php 
                                             // check whether image_name is available or not
-                                            if($image_name !="")
+                                            if($image_name =="")
                                             {
-                                                // Display the image
-                                                ?>
-                                                <img src="<?php echo SITEURL; ?>images/category/<?php echo $image_name; ?>" width="100px" >
-                                                <?php
+                                                //Display the message
+                                                echo "<div calss='error'>Image not added.</div>";
+                                                
 
                                             }
                                             else
                                             {
-                                                // Display the message
-                                                echo "<div calss='error'>Image not added.</div>";
+                                                // Display the image
+                                               ?>
+                                                <img src="<?php echo SITEURL; ?>images/category/<?php echo $image_name; ?>" width="100px">
+
+                                               <?php
                                             }
                                         ?>
                                     </td>

@@ -159,7 +159,7 @@
                     $price =$_POST['price'];
                     $current_image=$_POST['current_image'];
                     $category =$_POST['category'];
-                    $featured=$_POST['category'];
+                    $featured=$_POST['featured'];
                     $active=$_POST['active'];
 
                     // 2.Update the image if selected
@@ -214,10 +214,14 @@
                             }
 
                         }
+                        else
+                        {
+                            $image_name=$current_image;//default image when image is not selected
+                        }
                     }
                     else
                     {
-                        $image_name=$current_image;
+                        $image_name=$current_image;//default image where button is not selected
                     }
 
                     // 3.remove the image if new image is uploaded and current image exists

@@ -8,7 +8,7 @@
 
 
             <!--Button to add Admin-->
-            <a href="#" class="btn-primary">Add Order</a>
+            <a href="<?php echo SITEURL; ?>admin/add-order.php" class="btn-primary">Add Order</a>
 
             <br/><br/></br>
             <table class="tbl-full">
